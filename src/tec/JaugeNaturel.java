@@ -17,9 +17,9 @@ package tec;
  *
  */
 public class JaugeNaturel {
-  private long valeur;
-  private final long min;
-  private final long max;
+	private final int min;
+	private int valeur;
+	private final int max;
 
   /**
    * Construit une instance en précisant la valeur de départ de la Jauge
@@ -29,20 +29,20 @@ public class JaugeNaturel {
    * @param vigieMax valeur maximale de l'intervalle de vigie.
    * @param depart   valeur initiale de la jauge.
    */
-  public JaugeNaturel(long vigieMin, long vigieMax, long depart) {
-	  if(vigieMin > vigieMax) {
+  public JaugeNaturel(int valeurMin, int valeurActuelle , int valeurMax) {
+	  if(valeurMin > valeurMax) {
 		  System.out.println("la valeur minimale est inférieure à la valeur maximale!!")	;  
 		  }
 	  
 	  
 	 /**
 	  * Il faut ici vérifier que vigiMin(la valeur min ) soit strictement inférieure à vigieMax (la valeur max)
-	  * avant d'instancier une jauge 
+	  * avant d'instancier une jauge naturelle
 	  * 
 	  */
-	  this.valeur = depart;
-	  this.min = vigieMin;
-	  this.max = vigieMax;
+	  this.min = valeurMin;
+	  this.valeur = valeurActuelle;
+	  this.max = valeurMax;
     
     
     /* Le constructeur d'une classe permet d'initialiser l'etat de l'instance creee.
@@ -62,7 +62,16 @@ public class JaugeNaturel {
   public boolean estRouge() {
 	  return valeur >= max;
   }
+  
+  /**
+   * je me ici un getteur pour récupérer le nombre max de places assises et de places debout
+   * @return
+   */
+  public long getMax() {
+	  return max;
+  }
 
+  
 
   /**
    * L'état de la jauge est-il vert ?

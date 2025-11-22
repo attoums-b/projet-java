@@ -9,6 +9,7 @@ package tec;
  * nouvel arrêt.
  */
 public interface Transport {
+	
 
   /**
    * Indique au tranport de simuler l'arrêt suivant.
