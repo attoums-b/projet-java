@@ -1,250 +1,193 @@
 package tec3;
 
-import java.util.ArrayList;
 
-import tec3.Passager;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Autobus implements Transport, Bus {
-	/**La class Autobus contient:
-	 * 	-le nombre de places assises 
-	 * 	-le nombre de places debout 
-	 * 	-le numero de l'arret
-	 * Pour le stockage des passagers, on a :
-	 * 	-la liste des passagersAssis 
-	 * 	-enfin la liste des passagers debout 
-	 * On utilise ici des arrayList pour permettre de le stockage facile et dynamique de nos passagers
-	 * 
-	 * 
-	 * Les deux jauges naturelles permettront de représenter 3 valeurs
-	 * -Pour les places debouts et les places assises:
-	 * 			-la valeur minimale de places assise
-	 * 			-la valeur maximale de places assise
-	 * 			-la valeur actuelle de places assises(pour gérer par exemple le fait que 
-	 * 			une personne veuille s'assoir et donc vérifier qui il y'a des places assises libres
-	 * 			ou encore qu'une personne peut etre dehors et rentrer donc vérifier qu'il y'a des places
-	 * 			debouts disponibles ou des places assises disponibles 
-	 */
-	private JaugeNaturel nombrePlacesAssises ; // avec un nombre min et un nombre max
-	private JaugeNaturel nombrePlacesDebout;// idem
+	
+	private JaugeNaturel nombrePlacesAssises ; 
+	private JaugeNaturel nombrePlacesDebout;
 	private int numeroArret;
-	private ArrayList<Passager> passagersAssis;
-	private ArrayList<Passager> passagersDebout;
+	private List<Passager> passagersAssis;
+	private List<Passager> passagersDebout;
 
 	 /**
-	  * CONSTRUCTEUR DE LA CLASSE AUTOBUS :
-	  * 
-	  * 
-	  * 
-	  * @param nombresPlacesAssisesMax : permet d'instancier une jauge avec un nombre de places assises
-	  * @param nombresPlacesDeboutMax :permet d'instancier une jauge avec un nombre de places debout
+	  * Constructeur de la classe Autobus.
+	  * Initialise les jauges et les listes de passagers.
+	  * * @param placesAssisesMax Nombre maximum de places assises.
+	  * @param placesDeboutMax Nombre maximum de places debout.
 	  */
-
-	public Autobus(int nombresPlacesAssisesMax,int nombresPlacesDeboutMax){
-		
-		this.nombrePlacesAssises = new JaugeNaturel(0,0,nombresPlacesAssisesMax);
-		this.nombrePlacesDebout = new JaugeNaturel(0, 0,nombresPlacesDeboutMax);
-		this.numeroArret = 0;
-		this.passagersAssis = new ArrayList<>();
-		this.passagersDebout = new ArrayList<>();
-		
-
-
-
-
+	public Autobus(int placesAssisesMax, int placesDeboutMax) {
+	    this.nombrePlacesAssises = new JaugeNaturel(0, 0, placesAssisesMax);
+	    this.nombrePlacesDebout = new JaugeNaturel(0, 0, placesDeboutMax);
+	    this.numeroArret = 0;
+	    
+	    this.passagersAssis = new ArrayList<Passager>(placesAssisesMax);  
+	    this.passagersDebout = new ArrayList<Passager>(placesDeboutMax);
 	}
 	
-	
 	/**
-	 * Mise en place des getters
+	 * @return Le nombre maximum de places assises.
 	 */
-	
 	public int getNombrePlacesAssisesMax() {
 		return nombrePlacesAssises.getMax();
 	}
 	
+	/**
+	 * @return Le nombre maximum de places debout.
+	 */
 	public int getNombrePlacesDeboutMax() {
 		return nombrePlacesDebout.getMax();
 	}
 	
+	/**
+	 * @return Le nombre de places assises actuellement occupées.
+	 */
 	public int getNombrePlacesAssisesOccupes() {
 		return nombrePlacesAssises.getValeur();
 	}
 	
+	/**
+	 * @return Le nombre de places debout actuellement occupées.
+	 */
 	public int getNombrePlacesDeboutOccupes() {
 		return nombrePlacesDebout.getValeur();
 	}
-
+	
 	/**
-	 * On ne peut pas faire ici de setters car le nombre maximal et minimal de places assises et de places debout
-	 *  sont des constantes
-	 * (on été définis comme final dans JaugeNaturel)
+	 * Vrai s'il existe des places assises libres.
+	 * * @return true si des places sont disponibles.
 	 */
-	
-	
-	 public void ajouterPassagerDebout(Passager p) {
-		 passagersDebout.add(p);
-	 }
-	 
-	 public void ajouterPassagerAssis(Passager p) {
-		 passagersAssis.add(p);
-
-	 }
-	 
-	 public void retirerPassagerDebout(Passager p) {
-		 passagersDebout.remove(p);
-
-	 }
-	 
-	 public void retirerPassagerAssis(Passager p) {
-		 passagersDebout.remove(p);
-
-	 }
-	 
-	 
-	 
-	
-	
-	
-	
-	  /**
-	   * vrai s'il existe des places assises.
-	   * On vérifie ici que l'état de la jauge du nombre de places assises n'est pas rouge (! val <= min )
-	   * @return vrai s'il existe des places assises
-	   */
-	
 	 public boolean aPlaceAssise() {
-		 /**
-		  * il y'a une place assise si la jauge du nombre de places assis n'est pas rouge
-		  */
 		 return !nombrePlacesAssises.estRouge();
 	 }
 	 
-	  /**
-	   * vrai s'il existe des places debouts.
-	   * On vérifie ici que l'état de la jauge du nombre de places debout n'est pas rouge
-	   * 
-	   * @return vrai s'il existe des places debouts
-	   */
-	 
+	/**
+	 * Vrai s'il existe des places debout libres.
+	 * * @return true si des places sont disponibles.
+	 */
 	 public boolean aPlaceDebout() {
-		 /**
-		  *  il y'a une place debout si la jauge du nombre de places debout n'est pas rouge
-		  */
 		 return !nombrePlacesDebout.estRouge();
 	 }
 	 
-
-	 
-	 
-	
+	/**
+	 * Tente de faire monter un passager pour une place assise.
+	 * * @param p Le passager.
+	 */
 	 public void demanderPlaceAssise(Passager p) {
-		 if(aPlaceAssise() && p.estDehors()) {
-			 nombrePlacesAssises.incrementer();
-			 p.accepterPlaceAssise();
-			 ajouterPassagerAssis(p);
-
+		 if (aPlaceAssise() && p.estDehors()) {
+             if (passagersAssis.add(p)) {
+			    nombrePlacesAssises.incrementer();
+			    p.accepterPlaceAssise();
+             }
 		 }
-
-		 }
-	 /**
-	  * 
-	  */
-	
+	}
+	 
+	/**
+	 * Tente de faire monter un passager pour une place debout.
+	 * * @param p Le passager.
+	 */
 	 public void demanderPlaceDebout(Passager p){
-		if(aPlaceDebout() && p.estDehors()) {
-		
-			nombrePlacesDebout.incrementer();
-			p.accepterPlaceDebout();
-			ajouterPassagerDebout(p);
-
-
-			// si il y'a des places debout dispo 
-			// changer l'etat du passager de dehors en debout
-			// incrémenter la valeur de la jauge de nombre de places debout
+		if (aPlaceDebout() && p.estDehors()) {
+			if (passagersDebout.add(p)) {
+			    nombrePlacesDebout.incrementer();
+			    p.accepterPlaceDebout();
+            }
 		}
-		
-		
-
-		}
+	}
 	
+	/**
+	 * Tente de changer le passager de debout à assis.
+	 * * @param p Le passager.
+	 */
 	 public void demanderChangerEnAssis(Passager p) {
-			if(aPlaceAssise() && p.estDebout()) {
-				nombrePlacesDebout.decrementer();
-				nombrePlacesAssises.incrementer();
-				p.accepterPlaceAssise();
-				retirerPassagerDebout(p);
-				ajouterPassagerAssis(p);
-
-			}
-
+		if (aPlaceAssise() && p.estDebout()) {
+            if (passagersDebout.remove(p)) {
+                if (passagersAssis.add(p)) {
+                    nombrePlacesDebout.decrementer();
+                    nombrePlacesAssises.incrementer();
+                    p.accepterPlaceAssise();
+                } else {
+                    passagersDebout.add(p); // Annulation de la suppression
+                }
+            }
 		}
+	}
 		
+	/**
+	 * Tente de changer le passager d'assis à debout.
+	 * * @param p Le passager.
+	 */
 	public void demanderChangerEnDebout(Passager p) {
-			if (aPlaceDebout() && p.estAssis()) {
-				nombrePlacesAssises.decrementer();
-				nombrePlacesDebout.incrementer();
-				p.accepterPlaceDebout();
-				retirerPassagerAssis(p);
-				ajouterPassagerDebout(p);
-
-				
-			}
+		if (aPlaceDebout() && p.estAssis()) {
+            if (passagersAssis.remove(p)) {
+                if (passagersDebout.add(p)) {
+                    nombrePlacesAssises.decrementer();
+                    nombrePlacesDebout.incrementer();
+                    p.accepterPlaceDebout();
+                } else {
+                    passagersAssis.add(p); // Annulation de la suppression
+                }
+            }
 		}
+	}
 		
-		/**
-		 * -si il est assis : la place sur laquelle il était
-		 * assis est libérée
-		 * -idem pour si il était debout
-		 * -sinon on le fait sortir(accepterSortie --> passer de assis ou debout à dehors)
-		 * @param p : le passager
-		 */
-		
+	/**
+	 * Fait sortir le passager du bus, met à jour les jauges et change son état.
+	 * * @param p Le passager.
+	 */
 	public void demanderSortie(Passager p) {
-			if(p.estAssis()) {
+        boolean retire = false;
+
+		if (p.estAssis()) {
+            retire = passagersAssis.remove(p);
+			if (retire) {
 				nombrePlacesAssises.decrementer();
-				retirerPassagerAssis(p);
-
-				
-			}else if (p.estDebout()) {
-				nombrePlacesDebout.decrementer();
-				retirerPassagerDebout(p);
-
 			}
-			p.accepterSortie();
+		} else if (p.estDebout()) {
+            retire = passagersDebout.remove(p);
+			if (retire) {
+				
+				nombrePlacesDebout.decrementer();
+			}
 		}
+        
+        if (retire) {
+		    p.accepterSortie();
+        }
+	}
 		
-		/**
-		 * Cette methode:
-		 * 		-incrémente l'arret de 1
-		 * 		-informe les passagers qu'ils sont au nouvel arret (avec la fonction nouvelArret) en:
-		 * 			-parcourant la liste des passagers assis et la liste des passagers debout
-		 * 				-pour chaque passager des assis et des debout, on active la fonction monterDans
-		 * 	ce qui suppose que soit pour un passager p donné, il reste à son état normal , change d'état au sein du bus ou sort du bus
-		 * (en fonction des critères définis dans monterDans)
-		 * 
-		 */
+	/**
+	 * Incrémente le numéro d'arrêt et notifie tous les passagers actuellement dans le bus.
+	 */
+	@Override 
+	public void allerArretSuivant() {
+	    numeroArret++;
+	    
+	
+	    
+	    for(Passager p : passagersAssis) {
+	        if (p.estAssis()) { 
+	           p.nouvelArret(this, numeroArret);
+	        }
+	    }
+	    
+	    for(Passager p : passagersDebout) {
+	        if (p.estDebout()) {
+	            p.nouvelArret(this, numeroArret);
+	        }
+	    }
+	}
 		
-	public void allerArretSuivant() throws UsagerInvalideException {
-			
-			numeroArret ++;
-
-		}
-		
-		
-		/**
-		 * afficher correctement l'état entier d'un autobus
-		 * 
-		 * @return : cela retourne un arret , son nombre d'assis et son nombre de debouts
-		 * comme défini dans simple
-		 */
-		@Override
-		public String toString() {
-			return "[arret: " + numeroArret +
-					", assis:"+ getNombrePlacesAssisesMax() +
-					", debout:" + getNombrePlacesDeboutMax() + "]";
-		}
- 
-		 
-
+	/**
+	 * Affiche l'état actuel de l'autobus.
+	 * * @return Représentation textuelle de l'état du bus.
+	 */
+	@Override
+	public String toString() {
+		return "[arret: " + numeroArret +
+				", assis:"+ getNombrePlacesAssisesMax() +
+				", debout:" + getNombrePlacesDeboutMax() + "]";
+	}
 }
-

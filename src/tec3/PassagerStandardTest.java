@@ -15,6 +15,7 @@ public class PassagerStandardTest {
 	
 	PassagerStandard monPassager;
 	PassagerStandard monAutrePassager;
+	PassagerStandard monDernierPassager;
 
 	FauxBusVide fauxbusVide;
 	FauxBusPlein fauxbusPlein;
@@ -41,6 +42,7 @@ public class PassagerStandardTest {
 		 */
 		monPassager =  new PassagerStandard("Guillaume",3);
 		monAutrePassager = new PassagerStandard("Elie", 2);
+		monDernierPassager = new PassagerStandard("David",6);
 		fauxbusVide = new FauxBusVide();
 		fauxbusPlein = new FauxBusPlein();
 		fauxbusAssis = new FauxBusAssis();
@@ -177,7 +179,8 @@ public class PassagerStandardTest {
 	public final void TestNouvelArret_Sortie() {
 		monPassager.accepterPlaceAssise();
 		
-		monPassager.nouvelArret(fauxbusVide,3);//guillaume descend à sa destination qui est la 3
+		monPassager.nouvelArret(fauxbusVide,3);/**
+		guillaume descend à sa destination qui est la 3**/
 		
 		assertEquals(":demanderSortie:", fauxbusVide.message);
 		
@@ -195,9 +198,89 @@ public class PassagerStandardTest {
 		
 		assertEquals(":demanderSortie:", fauxbusVide.message);
 	}
+	
+	@Test
+	public final void TestNouvelArret_Sortie_ADestination() {
+		monPassager.accepterPlaceAssise(); // destination: 3
+		
+		//le bus est arrivé à l'arret 3
+		monPassager.nouvelArret(fauxbusVide, 3);
+		
+		/**
+		 * Vérification avec la classe faussaire
+		 * le passager doit demander à sortir
+		 * 
+		 */
+		
+		assertEquals(":demanderSortie:",fauxbusVide.message);
+		
+
+	}
+	
+	@Test
+	public final void TestNouvelArret_Sortie_ApresDestination() {
+		monPassager.accepterPlaceDebout(); // destination: 3
+		
+		//le bus est arrivé à l'arret 4 (a donc dépassé l'arret du passager)
+		monPassager.nouvelArret(fauxbusVide, 4);
+		
+		/**
+		 * Vérification avec la classe faussaire
+		 * le passager doit encore une fois  demander à sortir
+		 * 
+		 */
+		
+		assertEquals(":demanderSortie:",fauxbusVide.message);
+		
+
+	}
+	/**
+	 * arret inférieur à destination et le passager est à l'intérieur
+	 */
+	
+	@Test
+	public final void TestNouvelArret_NonSortie_AvantDestination() {
+		monDernierPassager.accepterPlaceAssise(); // destination: 6
+		
+		//le bus est arrivé à l'arret 5 
+		monPassager.nouvelArret(fauxbusVide, 5);
+		
+		/**
+		 * Vérification avec la classe faussaire
+		 * le passager ne dois pas descendre car ce n'est pas sa destination
+		 * 
+		 */
+		
+		assertEquals("???",fauxbusVide.message);
+		assertTrue(monDernierPassager.estAssis());
+		assertFalse(monDernierPassager.estDehors());
+		
+
+	}
+	
+	@Test
+	public final void TestNouvelArret_DejaDehors_AvantDestination() {
+		 //monDernierPassager est dehors par défaut 
+		
+		//le bus est arrivé à l'arret 5 
+		monDernierPassager.nouvelArret(fauxbusVide, 5);
+		
+		/**
+		 * Vérification avec la classe faussaire
+		 * l'etat du passager ne doit pas changer
+		 * 
+		 */
+		
+		assertEquals("???",fauxbusVide.message);
+		assertTrue(monDernierPassager.estDehors());
+		
+
+	}
+	
+	
 	/**
 	 * Teste le cas où le passager veut s'assoir à l'arrivée à 
-	 * un nouvel arret(il y'a des places assises libres
+	 * un nouvel arret(il y'a des places assises libres)
 	 */
 	
 	@Test

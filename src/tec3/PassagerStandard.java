@@ -25,6 +25,7 @@ public class PassagerStandard implements Passager, Usager{
 	
 
 	public PassagerStandard(String nom,int destination) {
+		
 		this.nom = nom;
 		this.destination = destination;
 		this.etat = new EtatPassager(Etat.DEHORS);
@@ -42,9 +43,13 @@ public class PassagerStandard implements Passager, Usager{
 	public int getDestination() {
 		return destination;
 	}
-	
+	/**
+	 * Nous devons vérifier que la destination est supérieure à 0
+	 * @param d
+	 */
 	public void setDestination(int d) {
-		this.destination = d;
+			this.destination = d;
+		
 	}
 	
 	
@@ -113,6 +118,7 @@ public class PassagerStandard implements Passager, Usager{
 		  if(numeroArret >= destination && etat.estInterieur()) {
 			  bus.demanderSortie(this);
 			  return;
+			  //tester le fait que numArret soit negatif et etatInterieur soit faux 
 			  
 		  } if (etat.estDebout() && bus.aPlaceAssise()) {
 			  bus.demanderChangerEnAssis(this);
@@ -142,7 +148,7 @@ public class PassagerStandard implements Passager, Usager{
 				  bus.demanderPlaceAssise(this);
 			  }else if(bus.aPlaceDebout()) {
 				  bus.demanderPlaceDebout(this);
-			  }else if (!bus.aPlaceAssise() && !bus.aPlaceDebout()) {
+			  }else {
 				  System.out.println("il n'ya pas de places disponibles pour ce bus! désolé :(");
 			  }
 		  }else  {
@@ -156,6 +162,8 @@ public class PassagerStandard implements Passager, Usager{
 	  public String toString() {
 		  return nom.toString() + " " + etat.toString().toLowerCase();
 	  }
+	  
+	  
 }
 	  
 
